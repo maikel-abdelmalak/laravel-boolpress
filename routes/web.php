@@ -18,5 +18,9 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+// home pubblica
+Route::get('/', 'HomeController@index')->name('home');
+// dashboard - rotte protette da password
+Route::prefix('admin')->namespace('Admin')->name('admin.')->middleware('auth')->group(function () {
+   Route::get('/', 'HomeController@index')->name('home');
+});
