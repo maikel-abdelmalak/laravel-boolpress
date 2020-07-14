@@ -28,7 +28,11 @@
                                 <td class="text-right">
                                     <a class="btn btn-info" href="{{route('admin.posts.show', ['post'=> $post->id])}}">Dettagli</a>
                                     <a class="btn btn-info" href="{{route('admin.posts.edit', ['post'=> $post->id])}}">Modifica</a>
-                                    <a class="btn btn-info" href="{{route('admin.posts.destroy', ['post'=> $post->id])}}">Elimina</a>
+                                    <form class="d-inline" action="{{route('admin.posts.destroy', ['post'=> $post->id])}}" method="post">
+                                        @method('DELETE')
+                                        @csrf
+                                        <button class="btn btn-info" type="submit" name="button" >Elimina</button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach

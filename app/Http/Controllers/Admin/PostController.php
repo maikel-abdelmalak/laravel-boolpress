@@ -52,7 +52,7 @@ class PostController extends Controller
       $post_trovato = Post::where('slug', $slug)->first();
       $i = 1;
       while($post_trovato) {
-          $slug = $slug_originale . '-' . $contatore;
+          $slug = $slug_originale . '-' . $i;
           $post_trovato = Post::where('slug', $slug)->first();
           $i++;
       }
@@ -110,7 +110,26 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'title' => 'required|max:255|unique:posts,title,'.$id,
+            'text' => 'required'
+      ]);
 
+      $dati = $request->all();
+      $slug = Str::of($dati['title'])->slug('-');
+      $slug_originale = $slug;
+      $post_trovato = Post::where('slug', $slug)->first();
+      $i = 1;
+      while($post_trovato) {
+          $slug = $slug_originale . '-' . $i;
+          $post_trovato = Post::where('slug', $slug)->first();
+          $i++;
+      }
+
+       $dati['slug'] = $slug;
+       $post = Post::find($id);
+       $post->update($dati);
+       return redirect()->route('admin.posts.index');
     }
 
     /**
@@ -121,6 +140,12 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = Post::find($id);
+        if($post) {
+          $post->delete();
+          return redirect()->route('admin.posts.index');
+        } else {
+          return abort('404');
+        }
     }
 }
