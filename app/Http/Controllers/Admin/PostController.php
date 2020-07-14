@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Post;
+use App\Category;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -14,7 +17,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::with('category')->get();
+        return view('admin.index', compact('posts'));
     }
 
     /**
@@ -24,7 +28,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+        return view('admin.create', compact('categories'));
+
     }
 
     /**
@@ -35,7 +41,27 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+          'title' => 'required|max:255|unique:posts,title',
+          'text' => 'required'
+      ]);
+
+      $dati = $request->all();
+      $slug = Str::of($dati['title'])->slug('-');
+      $slug_originale = $slug;
+      $post_trovato = Post::where('slug', $slug)->first();
+      $i = 1;
+      while($post_trovato) {
+          $slug = $slug_originale . '-' . $contatore;
+          $post_trovato = Post::where('slug', $slug)->first();
+          $i++;
+      }
+
+      $dati['slug'] = $slug;
+      $nuovo_post = new Post();
+      $nuovo_post->fill($dati);
+      $nuovo_post->save();
+      return redirect()->route('admin.posts.index');
     }
 
     /**
@@ -46,7 +72,12 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+        $post = Post::find($id);
+        if($post) {
+           return view('admin.show', compact('post'));
+        } else {
+           return abort('404');
+        }
     }
 
     /**
@@ -57,7 +88,17 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::find($id);
+        if($post) {
+           $categories = Category::all();
+           $data = [
+               'post' => $post,
+               'categories' => $categories
+           ];
+           return view('admin.edit', $data);
+        } else {
+           return abort('404');
+        }
     }
 
     /**
@@ -69,7 +110,7 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
     }
 
     /**
