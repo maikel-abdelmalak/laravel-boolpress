@@ -26,7 +26,13 @@
                                 <td>{{$post->id}}</td>
                                 <td>{{$post->title}}</td>
                                 <td>{{$post->slug}}</td>
-                                <td>{{$post->tags}}</td>
+                                <td>
+                                    @forelse ($post->tags as $tag)
+                                       {{ $tag->name }}{{ $loop->last ? '' : ', '}}
+                                    @empty
+                                       -
+                                    @endforelse
+                                </td>
                                 <td class="text-right">
                                     <a class="btn btn-info" href="{{route('admin.posts.show', ['post'=> $post->id])}}">Dettagli</a>
                                     <a class="btn btn-info" href="{{route('admin.posts.edit', ['post'=> $post->id])}}">Modifica</a>

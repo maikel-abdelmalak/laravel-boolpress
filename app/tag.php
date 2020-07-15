@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class tag extends Model
 {
     public function posts(){
-        return $this->belongToMany('app\post');
+        return $this->belongsToMany('app\post');
     }
 }
