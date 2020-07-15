@@ -39,6 +39,12 @@
                             @endforeach
                         </select>
                     </div>
+                    <div class="form-group">
+                        @foreach ($tags as $tag)
+                            <label for="">{{$tag->name}}</label>
+                            <input type="checkbox" name="tags[]" value="{{$tag->id}}">
+                        @endforeach
+                    </div>
                     <button type="submit" class="btn btn-primary">Aggiorna</button>
                 </form>
             </div>

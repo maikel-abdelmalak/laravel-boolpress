@@ -29,16 +29,16 @@
                     <div class="form-group">
                         <label for="categoria">Categoria:</label>
                         <select id="categoria" class="form-control" name="category_id">
+                            <option  value="">Seleziona categoria</option>
                             @foreach ($categories as $category)
-                                <option {{old('category_id') == $category->id ? 'selected' : ''}} value="">Seleziona categoria</option>
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                <option {{old('category_id') == $category->id ? 'selected' : ''}} value="{{ $category->id }}">{{ $category->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="form-group">
                         @foreach ($tags as $tag)
                             <label for="">{{$tag->name}}</label>
-                            <input type="checkbox" name="" value="{{$tag->id}}">
+                            <input type="checkbox" name="tags[]" value="{{$tag->id}}">
                         @endforeach
                     </div>
                     <button type="submit" class="btn btn-primary">Crea</button>

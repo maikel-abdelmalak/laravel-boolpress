@@ -67,11 +67,13 @@ class PostController extends Controller
           $post_trovato = Post::where('slug', $slug)->first();
           $i++;
       }
-
-      $dati['slug'] = $slug;
-      $nuovo_post = new Post();
-      $nuovo_post->fill($dati);
-      $nuovo_post->save();
+       $dati['slug'] = $slug;
+       $post = new Post();
+       $post->fill($dati);
+       $post->save();
+        if(!empty($dati['tags'])) {
+          $post->tags()->sync($dati['tags']);
+        }
       return redirect()->route('admin.posts.index');
     }
 
@@ -102,9 +104,11 @@ class PostController extends Controller
         $post = Post::find($id);
         if($post) {
            $categories = Category::all();
+           $tags = Tag::all();
            $data = [
                'post' => $post,
-               'categories' => $categories
+               'categories' => $categories,
+               'tags' => $tags
            ];
            return view('admin.edit', $data);
         } else {
@@ -140,6 +144,9 @@ class PostController extends Controller
        $dati['slug'] = $slug;
        $post = Post::find($id);
        $post->update($dati);
+       if(!empty($dati['tags'])) {
+         $post->tags()->sync($dati['tags']);
+       }
        return redirect()->route('admin.posts.index');
     }
 
