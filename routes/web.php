@@ -17,7 +17,8 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 // home pubblica
 Route::get('/', 'HomeController@index')->name('home');
-Route::get('/{slug}', 'HomeController@show')->name('show');
+Route::get('/show/{slug}', 'HomeController@show')->name('show');
+
 // dashboard - rotte protette da password
 Route::prefix('admin')->namespace('Admin')->name('admin.')->middleware('auth')->group(function () {
    Route::get('/', 'HomeController@index')->name('home');
