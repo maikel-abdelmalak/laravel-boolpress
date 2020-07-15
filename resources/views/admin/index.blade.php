@@ -17,6 +17,7 @@
                         <th>ID</th>
                         <th>TITLE</th>
                         <th>SLUG</th>
+                        <th>TAGS</th>
                         <th class="text-right">AZIONI</th>
                     </thead>
                     <tbody>
@@ -25,6 +26,7 @@
                                 <td>{{$post->id}}</td>
                                 <td>{{$post->title}}</td>
                                 <td>{{$post->slug}}</td>
+                                <td>{{$post->tags}}</td>
                                 <td class="text-right">
                                     <a class="btn btn-info" href="{{route('admin.posts.show', ['post'=> $post->id])}}">Dettagli</a>
                                     <a class="btn btn-info" href="{{route('admin.posts.edit', ['post'=> $post->id])}}">Modifica</a>
